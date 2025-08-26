@@ -4,9 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src = "script.js" defer></script>
+    <!--<script src = "script.js" defer></script> -->
 </head>
 <body>
+    <div class = "header">
+        <input type="image" id = "logo" alt = "logo" src="./images/logo.png">
+        <h3> YT Playlist Searcher </h3>
+    </div>
+
+    <button type="button">Search</button>
+
+    <label for = "playlistLink">Enter your playlist:</label>
+    <input type="text" id = "playlistLink">
+
+    <div id = "searchBarText">
+        <input type ="image" id = "informationButton" alt = "click to learn more about searching with keywords"
+               src = "./images/informationbutton.png">
+        <label for = "searchKeywords">Enter keyword(s) to search for:</label>
+    </div>
+    <input type="text" id = "searchKeywords">
+
+    <input type = "checkbox" id = "searchTitleBool" checked>
+    <label for = "searchTitleBool">Title</label>
+
+    <input type = "checkbox" id = "searchDescriptionBool" checked>
+    <label for = "searchDescriptionBool">Description</label>
+
+    <input type = "checkbox" id = "searchChannelTitleBool">
+    <label for = "searchChannelTitleBool">Channel Title</label>
+
+    <input type = "checkbox" id = "searchTagsBool" checked>
+    <label for = "searchTagsBool">Tags</label>
+
+    <input type = "checkbox" id = "searchCategoryBool">
+    <label for = "searchCategoryBool">Category</label>
+    
 
 </body>
 </html>
