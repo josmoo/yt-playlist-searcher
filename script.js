@@ -18,7 +18,8 @@ async function getPlaylistVideos(apiKey, playlistId) {
       description: item.snippet.description,
       channelTitle: item.snippet.channelTitle,
       tags: item.snippet.tags,
-      category: item.categoryId
+      category: item.categoryId,
+      thumbnail: item.snippet.thumbnail.default
     })));
     nextPageToken = data.nextPageToken;
   } while (nextPageToken);
