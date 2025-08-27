@@ -18,7 +18,23 @@ label {
     font-size: 18px;
 }
 
-#searchBarText{
+#searchResultsContainer{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    gap: 0px;
+}
+
+#videoListContainer{
+    width: 66%;
+}
+
+#youtubeEmbedContainer{
+    width: 34%;
+}
+
+
+#searchBarTextContainer{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
