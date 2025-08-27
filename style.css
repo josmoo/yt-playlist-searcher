@@ -1,0 +1,15 @@
+.header {
+    display: flex;
+    flex-direction: row;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: #F4F3F2;
+}
+
+#checkboxContainer{
+    display: flex;
+    justify-items: left;
+}
