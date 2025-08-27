@@ -2,17 +2,19 @@ body {
     display: flex;
     flex-direction: column;
     background-color: #F4F3F2;
+    margin:0px;
 }
 
 .header {
     display: flex;
     flex-direction: row;
     width: 90%;
+    padding-top: 2%;
     padding-bottom: 4%;
 }
 
 body > * {
     width: 66%;
     align-self: center;
-    color: #200011;
+    color: #2F0011;
 }

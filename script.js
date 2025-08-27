@@ -25,10 +25,32 @@ async function getPlaylistVideos(apiKey, playlistId) {
   return videos;
 }
 
-getPlaylistVideos('AIzaSyAwNFc3VpJCLpnqU677Zrfm5c8ct0fEb5o', 'PLW4MUYtOYOnu7XwnQ2veHBj10FCipgiNC')
-  .then(videos => console.log(videos));
+//getPlaylistVideos('AIzaSyAwNFc3VpJCLpnqU677Zrfm5c8ct0fEb5o', 'PLW4MUYtOYOnu7XwnQ2veHBj10FCipgiNC')
+//  .then(videos => console.log(videos));
 
 function dissectPlaylistURL(url) {
     var listIDPrefix = "list=";
     return url.substring(url.indexOf(listIDPrefix) + listIDPrefix.length);
 }
+
+
+//DOM MANIP
+let infoPopup = document.querySelector(".infoPopup");
+let showInformationButton = document.querySelector("#informationButton")
+let closeButton = document.querySelector(".closeButton");
+
+function toggleInfoPopup() {
+  console.log("toggleinfopopup");
+  infoPopup.classList.toggle("showInfoPopup")
+}
+
+function windowOnClick(event){
+  console.log("windowclick");
+  if(event.target === infoPopup){
+    toggleInfoPopup;
+  }
+}
+
+showInformationButton.addEventListener("click", toggleInfoPopup);
+closeButton.addEventListener("click", toggleInfoPopup); 
+window.addEventListener("click", windowOnClick);
