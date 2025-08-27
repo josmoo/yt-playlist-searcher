@@ -1,22 +1,3 @@
-body {
-    display: flex;
-    flex-direction: column;
-    background-color: #F4F3F2;
-}
-
-.header {
-    display: flex;
-    flex-direction: row;
-    width: 90%;
-    padding-bottom: 4%;
-}
-
-body > * {
-    width: 66%;
-    align-self: center;
-    color: #200011;
-}
-
 button {
     width: 22%;
     font-size: 18px;
