@@ -1,15 +1,44 @@
-.header {
-    display: flex;
-    flex-direction: row;
-}
-
 body {
     display: flex;
     flex-direction: column;
     background-color: #F4F3F2;
 }
 
-#checkboxContainer{
+.header {
     display: flex;
+    flex-direction: row;
+    width: 90%;
+    padding-bottom: 4%;
+}
+
+body > * {
+    width: 66%;
+    align-self: center;
+    color: #200011;
+}
+
+button {
+    width: 22%;
+    font-size: 18px;
+    margin-bottom: 2%;
+}
+
+input[type = "text"]{
+    margin-bottom: 2%;
+    font-size: 18px;
+}
+
+label {
+    font-size: 18px;
+}
+
+
+#checkboxContainer{
+    display: inline-block;
+    flex-direction: column;
     justify-items: left;
+}
+
+input[type="checkbox"] { /* change "blue" browser chrome to yellow */
+    accent-color: #FF0033;
 }

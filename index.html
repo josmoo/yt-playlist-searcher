@@ -13,35 +13,47 @@
         <h3> YT Playlist Searcher </h3>
     </div>
 
-    <button type="button">Search</button>
+    <button type="button">Search playlist</button>
 
     <label for = "playlistLink">Enter your playlist:</label>
-    <input type="text" id = "playlistLink">
-
+    <input type="text" id = "playlistLink"
+               placeholder="https://www.youtube.com/watch?v=0123456789A&list=PL0123456789ABCDEFGHIJKLMNOPQRSTUV">
+    
     <div id = "searchBarText">
         <label for = "searchKeywords">Enter keyword(s) to search for:</label>
         <input type ="image" id = "informationButton" alt = "click to learn more about searching with keywords"
                src = "./images/informationbutton.png">
     </div>
-    <input type="text" id = "searchKeywords">
+    <input type="text" id = "searchKeywords"
+           placeholder = "&quot;rock climb&quot; -indoor">
 
 
     <label for = "checkboxContainer">Search each video's:</label>
     <div id = "checkboxContainer">
-        <input type = "checkbox" id = "searchTitleBool" checked>
-        <label for = "searchTitleBool">Title</label>
+        <div class = "checkboxLine">
+            <input type = "checkbox" id = "searchTitleBool" checked>
+            <label for = "searchTitleBool">Title</label>
+        </div>
 
-        <input type = "checkbox" id = "searchDescriptionBool" checked>
-        <label for = "searchDescriptionBool">Description</label>
+        <div class = "checkboxLine">
+            <input type = "checkbox" id = "searchDescriptionBool" checked>
+            <label for = "searchDescriptionBool">Description</label>
+        </div>
 
-        <input type = "checkbox" id = "searchChannelTitleBool">
-        <label for = "searchChannelTitleBool">Channel Title</label>
+        <div class = "checkboxLine">
+            <input type = "checkbox" id = "searchChannelTitleBool">
+            <label for = "searchChannelTitleBool">Channel Title</label>
+        </div>
 
-        <input type = "checkbox" id = "searchTagsBool" checked>
-        <label for = "searchTagsBool">Tags</label>
+        <div class = "checkboxLine">
+            <input type = "checkbox" id = "searchTagsBool" checked>
+            <label for = "searchTagsBool">Tags</label>
+        </div>
 
-        <input type = "checkbox" id = "searchCategoryBool">
-        <label for = "searchCategoryBool">Category</label>
+        <div class = "checkboxLine">
+            <input type = "checkbox" id = "searchCategoryBool">
+            <label for = "searchCategoryBool">Category</label>
+        </div>
 
     </div>
     
