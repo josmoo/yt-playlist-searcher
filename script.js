@@ -13,14 +13,18 @@ async function getPlaylistVideos(apiKey, playlistId) {
       `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&key=${apiKey}${nextPageToken ? `&pageToken=${nextPageToken}` : ''}`
     );
     const data = await res.json();
+    let matchingText = [];
     videos = videos.concat(data.items.map(item => ({
       title: item.snippet.title,
       description: item.snippet.description,
       channelTitle: item.snippet.videoOwnerChannelTitle,
-      thumbnail: item.snippet.thumbnails.default
+      thumbnail: item.snippet.thumbnails.default,
+      videoId: item.snippet.resourceId.videoId,
+      matchingText: matchingText
     })));
     nextPageToken = data.nextPageToken;
   } while (nextPageToken);
+  console.log(videos);
   return videos.filter((video) => video.description !== "This video is unavailable." 
                                && video.description !== "This video is private.");
 }
@@ -60,6 +64,12 @@ function windowOnClick(event){
   }
 }
 
+function searchItemText(item, keywords){
+
+}
+
+function getIndices()
+
 function displayVideos(videos){
   const videoListContainer = document.querySelector("#videoListContainer");
   videos.map((video) => videoListContainer.appendChild(makeVideoCard(video)));
@@ -82,8 +92,6 @@ function makeVideoCard(video){
   title.textContent = video.title;
   titleContainer.appendChild(title);
 
-  
-
   let channelTitle = document.createElement("h4");
   channelTitle.textContent = video.channelTitle;
 
@@ -92,6 +100,10 @@ function makeVideoCard(video){
   card.appendChild(channelTitle);
 
   return card;
+}
+
+function makeYoutubeEmbedCard(videoUrl){ //will have to have access to matching string too
+
 }
 
 showInformationButton.addEventListener("click", toggleInfoPopup);

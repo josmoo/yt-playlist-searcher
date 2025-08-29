@@ -24,7 +24,7 @@ label {
     border-width: 2px;
     border-style: solid;
     display: flex;
-    max-height: 600px;
+    max-height: 512px;
     margin: 0px;
     padding: 0px;
     gap: 0px;
@@ -45,12 +45,19 @@ label {
     border-style: solid;
     padding: 10px;
     margin: 0px;
+    opacity: 90%;
+}
+
+.videoCard:hover{
+    opacity: 100%;
+    background-color: #F8FAFF;
 }
 
 
 .videoCard > img{
     align-self: center;
     justify-self: center;
+    transform: translateY(-4%);
     grid-area: thumbnail;
 }
 
