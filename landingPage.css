@@ -1,6 +1,7 @@
 button {
     width: 22%;
     font-size: 18px;
+    margin-top: 2%;
     margin-bottom: 2%;
     border: none;
     border-radius: .5rem;
@@ -19,6 +20,9 @@ label {
 }
 
 #searchResultsContainer{
+    border: #441122;
+    border-width: 2px;
+    border-style: solid;
     display: flex;
     margin: 0px;
     padding: 0px;
@@ -26,7 +30,35 @@ label {
 }
 
 #videoListContainer{
+    border-width: 1em;
     width: 66%;
+}
+
+.videoCard{
+    display: grid;
+    grid-template: 70px 40px / 160px auto;
+    grid-template-areas: "thumbnail videoTitle" "thumbnail channelTitle";
+    border: #F8FAFF;
+    border-width: 2px;
+    border-style: solid;
+    padding: 10px;
+    margin: 0px;
+}
+
+.videoCard > img{
+    align-self: center;
+    justify-self: center;
+    grid-area: thumbnail;
+}
+
+.videoCard > h3{
+    align-self: center;
+    grid-area: videoTitle;
+}
+
+.videoCard > h4{
+    align-self: center;
+    grid-area: channelTitle;
 }
 
 #youtubeEmbedContainer{
@@ -90,3 +122,4 @@ input[type="checkbox"] { /* change "blue" browser chrome to yellow */
     opacity: 1;
     visibility: visible;
 }
+

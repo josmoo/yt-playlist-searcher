@@ -16,22 +16,26 @@ async function getPlaylistVideos(apiKey, playlistId) {
     videos = videos.concat(data.items.map(item => ({
       title: item.snippet.title,
       description: item.snippet.description,
-      channelTitle: item.snippet.channelTitle,
-      tags: item.snippet.tags,
-      category: item.categoryId,
-      thumbnail: item.snippet.thumbnail.default
+      channelTitle: item.snippet.videoOwnerChannelTitle,
+      thumbnail: item.snippet.thumbnails.default
     })));
     nextPageToken = data.nextPageToken;
   } while (nextPageToken);
   return videos;
 }
 
-//getPlaylistVideos('AIzaSyAwNFc3VpJCLpnqU677Zrfm5c8ct0fEb5o', 'PLW4MUYtOYOnu7XwnQ2veHBj10FCipgiNC')
-//  .then(videos => console.log(videos));
+getPlaylistVideos('AIzaSyAwNFc3VpJCLpnqU677Zrfm5c8ct0fEb5o',
+   dissectPlaylistURL('https://www.youtube.com/watch?v=xXahlXQhMF4&list=PLW4MUYtOYOnu7WWY7hlPonUehcZX6Ue0F'))
+  .then(videos => displayVideos(videos));
 
 function dissectPlaylistURL(url) {
-    var listIDPrefix = "list=";
-    return url.substring(url.indexOf(listIDPrefix) + listIDPrefix.length);
+    const listIDPrefix = "list=";
+    let listID = url.substring(url.indexOf(listIDPrefix) + listIDPrefix.length);
+    let tail = listID.indexOf('&');
+
+    return tail === -1 
+           ? listID
+           : listID.substring(0, tail);
 }
 
 
@@ -50,6 +54,33 @@ function windowOnClick(event){
   if(event.target === infoPopup){
     toggleInfoPopup;
   }
+}
+
+function displayVideos(videos){
+  const videoListContainer = document.querySelector("#videoListContainer");
+  videos.map((video) => videoListContainer.appendChild(makeVideoCard(video)));
+}
+
+function makeVideoCard(video){
+  let card = document.createElement("div");
+  card.classList.add("videoCard");
+
+  let thumbnail = document.createElement("img");
+  thumbnail.src = video.thumbnail.url;
+  thumbnail.width = video.thumbnail.width;
+  thumbnail.height = video.thumbnail.height;
+
+  let title = document.createElement("h3");
+  title.textContent = video.title;
+
+  let channelTitle = document.createElement("h4");
+  channelTitle.textContent = video.channelTitle;
+
+  card.appendChild(thumbnail);
+  card.appendChild(title);
+  card.appendChild(channelTitle);
+
+  return card;
 }
 
 showInformationButton.addEventListener("click", toggleInfoPopup);
