@@ -21,11 +21,15 @@ async function getPlaylistVideos(apiKey, playlistId) {
     })));
     nextPageToken = data.nextPageToken;
   } while (nextPageToken);
-  return videos;
+  return videos.filter((video) => video.description !== "This video is unavailable." 
+                               && video.description !== "This video is private.");
 }
 
+// https://www.youtube.com/watch?v=UwxatzcYf9Q&list=PLW4MUYtOYOnsMPKysEpLYBXryNi9RpEET
+// https://www.youtube.com/watch?v=xXahlXQhMF4&list=PLW4MUYtOYOnu7WWY7hlPonUehcZX6Ue0F
+
 getPlaylistVideos('AIzaSyAwNFc3VpJCLpnqU677Zrfm5c8ct0fEb5o',
-   dissectPlaylistURL('https://www.youtube.com/watch?v=xXahlXQhMF4&list=PLW4MUYtOYOnu7WWY7hlPonUehcZX6Ue0F'))
+   dissectPlaylistURL('https://www.youtube.com/watch?v=UwxatzcYf9Q&list=PLW4MUYtOYOnsMPKysEpLYBXryNi9RpEET'))
   .then(videos => displayVideos(videos));
 
 function dissectPlaylistURL(url) {
@@ -66,18 +70,25 @@ function makeVideoCard(video){
   card.classList.add("videoCard");
 
   let thumbnail = document.createElement("img");
+  console.log(video);
   thumbnail.src = video.thumbnail.url;
   thumbnail.width = video.thumbnail.width;
   thumbnail.height = video.thumbnail.height;
 
+  let titleContainer = document.createElement("div");
+  titleContainer.classList.add("videoTitleContainer");
+
   let title = document.createElement("h3");
   title.textContent = video.title;
+  titleContainer.appendChild(title);
+
+  
 
   let channelTitle = document.createElement("h4");
   channelTitle.textContent = video.channelTitle;
 
   card.appendChild(thumbnail);
-  card.appendChild(title);
+  card.appendChild(titleContainer);
   card.appendChild(channelTitle);
 
   return card;

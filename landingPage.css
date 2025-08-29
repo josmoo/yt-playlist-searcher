@@ -24,6 +24,7 @@ label {
     border-width: 2px;
     border-style: solid;
     display: flex;
+    max-height: 600px;
     margin: 0px;
     padding: 0px;
     gap: 0px;
@@ -32,11 +33,12 @@ label {
 #videoListContainer{
     border-width: 1em;
     width: 66%;
+    overflow-y:scroll;
 }
 
 .videoCard{
     display: grid;
-    grid-template: 70px 40px / 160px auto;
+    grid-template: 4em 40px / 160px auto;
     grid-template-areas: "thumbnail videoTitle" "thumbnail channelTitle";
     border: #F8FAFF;
     border-width: 2px;
@@ -45,20 +47,35 @@ label {
     margin: 0px;
 }
 
+
 .videoCard > img{
     align-self: center;
     justify-self: center;
     grid-area: thumbnail;
 }
 
-.videoCard > h3{
-    align-self: center;
+.videoTitleContainer{
+
+
     grid-area: videoTitle;
+    line-height: 1.2em;
+    height: 3.95em;
+    overflow: hidden;
+
+    text-align: start;
+}
+
+.videoTitleContainer > h3{
+    padding:0px;
+    margin:0px;
 }
 
 .videoCard > h4{
     align-self: center;
     grid-area: channelTitle;
+    overflow: hidden;
+    height: 2.4em;
+    line-height: 1.2em;
 }
 
 #youtubeEmbedContainer{
