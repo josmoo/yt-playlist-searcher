@@ -5,7 +5,7 @@
  * @param {string} playlistId
  * @returns {array} videos - an array of video objects, which contains its title, description, channeltitle, tags, and category
  */
-async function getPlaylistVideos(apiKey, playlistId) {
+async function getPlaylistVideos(apiKey, playlistId, keywords) {
   let videos = [];
   let nextPageToken = '';
   do {
@@ -13,18 +13,16 @@ async function getPlaylistVideos(apiKey, playlistId) {
       `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&key=${apiKey}${nextPageToken ? `&pageToken=${nextPageToken}` : ''}`
     );
     const data = await res.json();
-    let matchingText = [];
-    videos = videos.concat(data.items.map(item => ({
+    videos = videos.concat(data.items.filter(item => doesItemContainKeywords(item, keywords))
+                          .map(item => ({
       title: item.snippet.title,
       description: item.snippet.description,
       channelTitle: item.snippet.videoOwnerChannelTitle,
       thumbnail: item.snippet.thumbnails.default,
-      videoId: item.snippet.resourceId.videoId,
-      matchingText: matchingText
+      videoId: item.snippet.resourceId.videoId
     })));
     nextPageToken = data.nextPageToken;
   } while (nextPageToken);
-  console.log(videos);
   return videos.filter((video) => video.description !== "This video is unavailable." 
                                && video.description !== "This video is private.");
 }
@@ -32,8 +30,12 @@ async function getPlaylistVideos(apiKey, playlistId) {
 // https://www.youtube.com/watch?v=UwxatzcYf9Q&list=PLW4MUYtOYOnsMPKysEpLYBXryNi9RpEET
 // https://www.youtube.com/watch?v=xXahlXQhMF4&list=PLW4MUYtOYOnu7WWY7hlPonUehcZX6Ue0F
 
+
+let keywords = ["5"];
+
 getPlaylistVideos('AIzaSyAwNFc3VpJCLpnqU677Zrfm5c8ct0fEb5o',
-   dissectPlaylistURL('https://www.youtube.com/watch?v=UwxatzcYf9Q&list=PLW4MUYtOYOnsMPKysEpLYBXryNi9RpEET'))
+    dissectPlaylistURL('https://www.youtube.com/watch?v=UwxatzcYf9Q&list=PLW4MUYtOYOnsMPKysEpLYBXryNi9RpEET'),
+    keywords)
   .then(videos => displayVideos(videos));
 
 function dissectPlaylistURL(url) {
@@ -64,11 +66,26 @@ function windowOnClick(event){
   }
 }
 
-function searchItemText(item, keywords){
+function doesItemContainKeywords(item, keywords){
+  let textToSearch = "";
+  if (document.querySelector("#searchTitleBool").checked){
+    textToSearch += item.snippet.title;
+  }
+  if (document.querySelector("#searchDescriptionBool").checked){
+    textToSearch += item.snippet.description;
+  } 
+  if (document.querySelector("#searchChannelTitleBool").checked){
+    textToSearch += item.snippet.videoOwnerChannelTitle;
+  }
 
+  return keywords.reduce((bool, keyword) => 
+            doesTextContainKeyword(textToSearch, keyword) && bool, true);
 }
 
-function getIndices()
+//recursive function that appends index matches for a keyword. returns false if nothing is found
+function doesTextContainKeyword(giantTextString, keyword){
+  return giantTextString.indexOf(keyword) !== -1;
+}
 
 function displayVideos(videos){
   const videoListContainer = document.querySelector("#videoListContainer");
@@ -80,7 +97,6 @@ function makeVideoCard(video){
   card.classList.add("videoCard");
 
   let thumbnail = document.createElement("img");
-  console.log(video);
   thumbnail.src = video.thumbnail.url;
   thumbnail.width = video.thumbnail.width;
   thumbnail.height = video.thumbnail.height;
