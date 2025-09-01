@@ -30,14 +30,6 @@ async function getPlaylistVideos(apiKey, playlistId, keywords) {
 // https://www.youtube.com/watch?v=UwxatzcYf9Q&list=PLW4MUYtOYOnsMPKysEpLYBXryNi9RpEET
 // https://www.youtube.com/watch?v=xXahlXQhMF4&list=PLW4MUYtOYOnu7WWY7hlPonUehcZX6Ue0F
 
-
-let keywords = ["5"];
-
-// getPlaylistVideos('AIzaSyAwNFc3VpJCLpnqU677Zrfm5c8ct0fEb5o',
-//     dissectPlaylistURL(),
-//     getKeywords())
-//   .then(videos => displayVideos(videos));
-
 function dissectPlaylistURL() {
   const url = document.getElementById("playlistLink").value;
   const listIDPrefix = "list=";
@@ -52,18 +44,15 @@ function dissectPlaylistURL() {
 function getKeywords(){
   let keywordsString = document.getElementById("searchKeywords").value.toLowerCase();
   let keywords = [];
-  console.log(keywordsString);
 
   //this handles phrases as keywords using quotes
   while(true){
     let openingQuoteIndex = keywordsString.indexOf('"');
-    console.log(openingQuoteIndex + ": oqi. ");
     if(openingQuoteIndex === -1){
       break;
     }
 
     let closingQuoteIndex = keywordsString.indexOf('"', openingQuoteIndex + 1);
-    console.log(closingQuoteIndex + ": cqi. ");
     if(closingQuoteIndex === -1 || closingQuoteIndex-2 < openingQuoteIndex){
       console.log("uh oh oopsy woopsy");
       break;
@@ -77,24 +66,6 @@ function getKeywords(){
   keywords = keywords.concat(keywordsString.split(" "));
 
   return keywords;
-}
-
-
-//DOM MANIP
-let infoPopup = document.querySelector(".infoPopup");
-let showInformationButton = document.querySelector("#informationButton")
-let closeButton = document.querySelector(".closeButton");
-
-function toggleInfoPopup() {
-  console.log("toggleinfopopup");
-  infoPopup.classList.toggle("showInfoPopup")
-}
-
-function windowOnClick(event){
-  console.log("windowclick");
-  if(event.target === infoPopup){
-    toggleInfoPopup;
-  }
 }
 
 function doesItemContainKeywords(item, keywords){
@@ -154,6 +125,38 @@ function makeVideoCard(video){
 
 function makeYoutubeEmbedCard(videoUrl){
 
+}
+
+//event listeners
+let videoCards = document.querySelectorAll(".videoCard")
+let searchPlaylistButton = document.getElementById("searchPlaylistButton");
+let infoPopup = document.querySelector(".infoPopup");
+let showInformationButton = document.querySelector("#informationButton")
+let closeButton = document.querySelector(".closeButton");
+
+function toggleInfoPopup() {
+  infoPopup.classList.toggle("showInfoPopup")
+}
+
+function windowOnClick(event){
+  console.log(event.target);
+  switch(event.target){
+
+    case infoPopup:
+      toggleInfoPopup;
+      break;
+    
+    case searchPlaylistButton:
+      getPlaylistVideos('AIzaSyAwNFc3VpJCLpnqU677Zrfm5c8ct0fEb5o',
+        dissectPlaylistURL(),
+        getKeywords())
+      .then(videos => displayVideos(videos));
+      break;
+
+    case videoCards:
+      console.log(event.target.classList);
+      break;
+  }
 }
 
 showInformationButton.addEventListener("click", toggleInfoPopup);
