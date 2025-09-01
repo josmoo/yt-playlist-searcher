@@ -33,19 +33,50 @@ async function getPlaylistVideos(apiKey, playlistId, keywords) {
 
 let keywords = ["5"];
 
-getPlaylistVideos('AIzaSyAwNFc3VpJCLpnqU677Zrfm5c8ct0fEb5o',
-    dissectPlaylistURL('https://www.youtube.com/watch?v=UwxatzcYf9Q&list=PLW4MUYtOYOnsMPKysEpLYBXryNi9RpEET'),
-    keywords)
-  .then(videos => displayVideos(videos));
+// getPlaylistVideos('AIzaSyAwNFc3VpJCLpnqU677Zrfm5c8ct0fEb5o',
+//     dissectPlaylistURL(),
+//     getKeywords())
+//   .then(videos => displayVideos(videos));
 
-function dissectPlaylistURL(url) {
-    const listIDPrefix = "list=";
-    let listID = url.substring(url.indexOf(listIDPrefix) + listIDPrefix.length);
-    let tail = listID.indexOf('&');
+function dissectPlaylistURL() {
+  const url = document.getElementById("playlistLink").value;
+  const listIDPrefix = "list=";
+  let listID = url.substring(url.indexOf(listIDPrefix) + listIDPrefix.length);
+  let tail = listID.indexOf('&');
 
-    return tail === -1 
-           ? listID
-           : listID.substring(0, tail);
+  return tail === -1 
+         ? listID
+         : listID.substring(0, tail);
+}
+
+function getKeywords(){
+  let keywordsString = document.getElementById("searchKeywords").value.toLowerCase();
+  let keywords = [];
+  console.log(keywordsString);
+
+  //this handles phrases as keywords using quotes
+  while(true){
+    let openingQuoteIndex = keywordsString.indexOf('"');
+    console.log(openingQuoteIndex + ": oqi. ");
+    if(openingQuoteIndex === -1){
+      break;
+    }
+
+    let closingQuoteIndex = keywordsString.indexOf('"', openingQuoteIndex + 1);
+    console.log(closingQuoteIndex + ": cqi. ");
+    if(closingQuoteIndex === -1 || closingQuoteIndex-2 < openingQuoteIndex){
+      console.log("uh oh oopsy woopsy");
+      break;
+      //todo throw error and have error popup. i like the popup idea
+    }
+
+    keywords.push(keywordsString.slice(openingQuoteIndex + 1, closingQuoteIndex - 1));
+    keywordsString = keywordsString.substring(0, openingQuoteIndex -1) + keywordsString.substring(closingQuoteIndex+1);
+  }
+
+  keywords = keywords.concat(keywordsString.split(" "));
+
+  return keywords;
 }
 
 
@@ -69,13 +100,13 @@ function windowOnClick(event){
 function doesItemContainKeywords(item, keywords){
   let textToSearch = "";
   if (document.querySelector("#searchTitleBool").checked){
-    textToSearch += item.snippet.title;
+    textToSearch += item.snippet.title.toLowerCase();
   }
   if (document.querySelector("#searchDescriptionBool").checked){
-    textToSearch += item.snippet.description;
+    textToSearch += item.snippet.description.toLowerCase();
   } 
   if (document.querySelector("#searchChannelTitleBool").checked){
-    textToSearch += item.snippet.videoOwnerChannelTitle;
+    textToSearch += item.snippet.videoOwnerChannelTitle.toLowerCase();
   }
 
   return keywords.reduce((bool, keyword) => 
@@ -89,6 +120,9 @@ function doesTextContainKeyword(giantTextString, keyword){
 
 function displayVideos(videos){
   const videoListContainer = document.querySelector("#videoListContainer");
+  while(videoListContainer.firstChild){
+    videoListContainer.removeChild(videoListContainer.lastChild);
+  }
   videos.map((video) => videoListContainer.appendChild(makeVideoCard(video)));
 }
 
@@ -118,7 +152,7 @@ function makeVideoCard(video){
   return card;
 }
 
-function makeYoutubeEmbedCard(videoUrl){ //will have to have access to matching string too
+function makeYoutubeEmbedCard(videoUrl){
 
 }
 
