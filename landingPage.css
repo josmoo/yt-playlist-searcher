@@ -101,6 +101,7 @@ label {
     display: inline-block;
     flex-direction: column;
     justify-items: left;
+    padding-bottom: 4%;
 }
 
 input[type="checkbox"] { /* change "blue" browser chrome to yellow */
