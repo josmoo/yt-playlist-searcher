@@ -86,9 +86,36 @@ label {
 }
 
 #youtubeEmbedContainer{
+    position: relative;
     width: 34%;
+    overflow-y: auto;
+    /* display: grid;
+    grid-template: 1fr / 1fr;
+    grid-template-areas: "embedCard" */
 }
 
+.embedCard{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    justify-self: center;
+    align-self: center;
+    align-content: center;
+    
+    top: 5%;
+    left: 6%;
+    width: 88% !important;
+    overflow: wrap;
+    overflow-wrap: break-word;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.embedCard > iframe{
+    align-self: center;
+    border: none;
+    width: 100%;
+}
 
 #searchBarTextContainer{
     display: flex;
@@ -104,7 +131,7 @@ label {
     padding-bottom: 4%;
 }
 
-input[type="checkbox"] { /* change "blue" browser chrome to yellow */
+input[type="checkbox"] {
     accent-color: #FF0033;
 }
 
@@ -143,7 +170,7 @@ input[type="checkbox"] { /* change "blue" browser chrome to yellow */
     text-align: center;
 }
 
-.showInfoPopup{
+.show{
     opacity: 1;
     visibility: visible;
 }

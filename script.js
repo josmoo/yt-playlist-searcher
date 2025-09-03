@@ -90,7 +90,7 @@ function doesTextContainKeyword(giantTextString, keyword){
 }
 
 function displayVideos(videos){
-  const videoListContainer = document.querySelector("#videoListContainer");
+  const videoListContainer = document.getElementById("videoListContainer");
   while(videoListContainer.firstChild){
     videoListContainer.removeChild(videoListContainer.lastChild);
   }
@@ -98,8 +98,8 @@ function displayVideos(videos){
 }
 
 function makeVideoCard(video){
-  let card = document.createElement("div");
-  card.classList.add("videoCard");
+  let videoCard = document.createElement("div");
+  videoCard.classList.add("videoCard");
 
   let thumbnail = document.createElement("img");
   thumbnail.src = video.thumbnail.url;
@@ -116,15 +116,36 @@ function makeVideoCard(video){
   let channelTitle = document.createElement("h4");
   channelTitle.textContent = video.channelTitle;
 
-  card.appendChild(thumbnail);
-  card.appendChild(titleContainer);
-  card.appendChild(channelTitle);
+  videoCard.appendChild(thumbnail);
+  videoCard.appendChild(titleContainer);
+  videoCard.appendChild(channelTitle);
 
-  return card;
+  return videoCard;
 }
 
-function makeYoutubeEmbedCard(videoUrl){
+function placeYoutubeEmbedCards(videos){
+  const youtubeEmbedContainer = document.getElementById("youtubeEmbedContainer");
+  while(youtubeEmbedContainer.firstChild){
+    youtubeEmbedContainer.removeChild(youtubeEmbedContainer.lastChild);
+  }
+  videos.map((video) => youtubeEmbedContainer.appendChild(makeYoutubeEmbedCard(video)));
+}
 
+function makeYoutubeEmbedCard(video){
+  let embedCard = document.createElement("div");
+  embedCard.classList.add("embedCard");
+
+  let videoEmbed = document.createElement("iframe");
+  videoEmbed.src = "https://www.youtube.com/embed/" + video.videoId;
+
+
+  let description = document.createElement("p");
+  description.textContent = video.description;
+
+  embedCard.appendChild(videoEmbed);
+  embedCard.appendChild(description);
+
+  return embedCard;
 }
 
 //event listeners
@@ -135,7 +156,7 @@ let showInformationButton = document.querySelector("#informationButton")
 let closeButton = document.querySelector(".closeButton");
 
 function toggleInfoPopup() {
-  infoPopup.classList.toggle("showInfoPopup")
+  infoPopup.classList.toggle("show")
 }
 
 function windowOnClick(event){
@@ -150,7 +171,10 @@ function windowOnClick(event){
       getPlaylistVideos('AIzaSyAwNFc3VpJCLpnqU677Zrfm5c8ct0fEb5o',
         dissectPlaylistURL(),
         getKeywords())
-      .then(videos => displayVideos(videos));
+      .then(videos => {
+          displayVideos(videos);
+          placeYoutubeEmbedCards(videos);
+        });
       break;
 
     case videoCards:
