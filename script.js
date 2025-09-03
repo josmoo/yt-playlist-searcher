@@ -27,9 +27,6 @@ async function getPlaylistVideos(apiKey, playlistId, keywords) {
                                && video.description !== "This video is private.");
 }
 
-// https://www.youtube.com/watch?v=UwxatzcYf9Q&list=PLW4MUYtOYOnsMPKysEpLYBXryNi9RpEET
-// https://www.youtube.com/watch?v=xXahlXQhMF4&list=PLW4MUYtOYOnu7WWY7hlPonUehcZX6Ue0F
-
 function dissectPlaylistURL() {
   const url = document.getElementById("playlistLink").value;
   const listIDPrefix = "list=";
@@ -164,19 +161,6 @@ let infoPopup = document.querySelector(".infoPopup");
 let showInformationButton = document.querySelector("#informationButton");
 let closeButton = document.querySelector(".closeButton");
 
-//todo this is working how it should, where it adds show to the classlist of the element you clicked
-//the problem is I realized I don't actually want that. I need to toggle the popup associated with
-//the info button. and for the general case, I need to toggle the youtube embed card associated with
-//the video card I clicked. I'm not sure how to write taht juts yet.
-
-//I think I need to hard code both. so the associated buttons with infopopup will always only call
-//that specifically and hard coded
-//likewise, the video cards will call their associated embed card. This can be done by matching the index
-//of both. I'm not sure what else they would have in common or anything. maybe id? I don't have that in
-//either though
-
-//so current plan is get the index of the video card, and then toggle the show class on the embed card
-//with that same index
 function toggleVideoEmbed(event) { 
   let oldVideoEmbed = document.querySelector(".show");
   if(oldVideoEmbed){
