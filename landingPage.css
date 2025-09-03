@@ -38,8 +38,8 @@ label {
 
 .videoCard{
     display: grid;
-    grid-template: 4em 40px / 160px auto;
-    grid-template-areas: "thumbnail videoTitle" "thumbnail channelTitle";
+    grid-template: 4em 40px / 160px auto 24px;
+    grid-template-areas: "thumbnail videoTitle videoTitle" "thumbnail channelTitle index";
     border: #F8FAFF;
     border-width: 2px;
     border-style: solid;
@@ -83,6 +83,10 @@ label {
     overflow: hidden;
     height: 2.4em;
     line-height: 1.2em;
+}
+
+.videoCard > h5{
+    grid-area: index;
 }
 
 #youtubeEmbedContainer{

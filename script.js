@@ -94,10 +94,13 @@ function displayVideos(videos){
   while(videoListContainer.firstChild){
     videoListContainer.removeChild(videoListContainer.lastChild);
   }
-  videos.map((video) => videoListContainer.appendChild(makeVideoCard(video)));
+  videos.map((video, index) => {
+    videoListContainer.appendChild(makeVideoCard(video, index))
+                      .addEventListener("click", toggleVideoEmbed);
+  });
 }
 
-function makeVideoCard(video){
+function makeVideoCard(video, index){
   let videoCard = document.createElement("div");
   videoCard.classList.add("videoCard");
 
@@ -116,9 +119,13 @@ function makeVideoCard(video){
   let channelTitle = document.createElement("h4");
   channelTitle.textContent = video.channelTitle;
 
+  let indexText = document.createElement("h5");
+  indexText.textContent = index;
+
   videoCard.appendChild(thumbnail);
   videoCard.appendChild(titleContainer);
   videoCard.appendChild(channelTitle);
+  videoCard.appendChild(indexText);
 
   return videoCard;
 }
@@ -128,12 +135,13 @@ function placeYoutubeEmbedCards(videos){
   while(youtubeEmbedContainer.firstChild){
     youtubeEmbedContainer.removeChild(youtubeEmbedContainer.lastChild);
   }
-  videos.map((video) => youtubeEmbedContainer.appendChild(makeYoutubeEmbedCard(video)));
+  videos.map((video, index) => youtubeEmbedContainer.appendChild(makeYoutubeEmbedCard(video, index)));
 }
 
-function makeYoutubeEmbedCard(video){
+function makeYoutubeEmbedCard(video, index){
   let embedCard = document.createElement("div");
   embedCard.classList.add("embedCard");
+  embedCard.id = "embedCard" + index.toString();
 
   let videoEmbed = document.createElement("iframe");
   videoEmbed.src = "https://www.youtube.com/embed/" + video.videoId;
@@ -149,18 +157,42 @@ function makeYoutubeEmbedCard(video){
 }
 
 //event listeners
-let videoCards = document.querySelectorAll(".videoCard")
+let videoCards = document.getElementsByClassName("videoCard");
+let embedCards = document.getElementsByClassName("embedCard");
 let searchPlaylistButton = document.getElementById("searchPlaylistButton");
 let infoPopup = document.querySelector(".infoPopup");
-let showInformationButton = document.querySelector("#informationButton")
+let showInformationButton = document.querySelector("#informationButton");
 let closeButton = document.querySelector(".closeButton");
 
-function toggleInfoPopup() {
-  infoPopup.classList.toggle("show")
+//todo this is working how it should, where it adds show to the classlist of the element you clicked
+//the problem is I realized I don't actually want that. I need to toggle the popup associated with
+//the info button. and for the general case, I need to toggle the youtube embed card associated with
+//the video card I clicked. I'm not sure how to write taht juts yet.
+
+//I think I need to hard code both. so the associated buttons with infopopup will always only call
+//that specifically and hard coded
+//likewise, the video cards will call their associated embed card. This can be done by matching the index
+//of both. I'm not sure what else they would have in common or anything. maybe id? I don't have that in
+//either though
+
+//so current plan is get the index of the video card, and then toggle the show class on the embed card
+//with that same index
+function toggleVideoEmbed(event) { 
+  let oldVideoEmbed = document.querySelector(".show");
+  if(oldVideoEmbed){
+    oldVideoEmbed.classList.toggle("show");
+  }
+  let videoEmbed = document.getElementById("embedCard" + event.currentTarget.lastChild.textContent);
+  console.log(event.currentTarget);
+  console.log(videoEmbed);
+  videoEmbed.classList.toggle("show");
+}
+
+function toggleInfoPopup(){
+  infoPopup.classList.toggle("show");
 }
 
 function windowOnClick(event){
-  console.log(event.target);
   switch(event.target){
 
     case infoPopup:
@@ -178,10 +210,13 @@ function windowOnClick(event){
       break;
 
     case videoCards:
+      embedCards.classList.toggle("show");
       console.log(event.target.classList);
       break;
   }
 }
+
+
 
 showInformationButton.addEventListener("click", toggleInfoPopup);
 closeButton.addEventListener("click", toggleInfoPopup); 
