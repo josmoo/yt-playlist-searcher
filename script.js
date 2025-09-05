@@ -158,6 +158,7 @@ let videoCards = document.getElementsByClassName("videoCard");
 let embedCards = document.getElementsByClassName("embedCard");
 let searchPlaylistButton = document.getElementById("searchPlaylistButton");
 let infoPopup = document.querySelector(".infoPopup");
+let loadingScreen = document.querySelector(".loadingScreen");
 let showInformationButton = document.querySelector("#informationButton");
 let closeButton = document.querySelector(".closeButton");
 
@@ -176,31 +177,26 @@ function toggleInfoPopup(){
   infoPopup.classList.toggle("show");
 }
 
+function toggleLoading(){
+  loadingScreen.classList.toggle("show");
+}
+
 function windowOnClick(event){
   switch(event.target){
-
-    case infoPopup:
-      toggleInfoPopup;
-      break;
-    
     case searchPlaylistButton:
+      toggleLoading();
       getPlaylistVideos('AIzaSyAwNFc3VpJCLpnqU677Zrfm5c8ct0fEb5o',
         dissectPlaylistURL(),
         getKeywords())
       .then(videos => {
           displayVideos(videos);
           placeYoutubeEmbedCards(videos);
+          toggleLoading();
         });
-      break;
 
-    case videoCards:
-      embedCards.classList.toggle("show");
-      console.log(event.target.classList);
       break;
   }
 }
-
-
 
 showInformationButton.addEventListener("click", toggleInfoPopup);
 closeButton.addEventListener("click", toggleInfoPopup); 
