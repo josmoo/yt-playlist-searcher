@@ -178,6 +178,7 @@ function toggleInfoPopup(){
 }
 
 function toggleLoading(){
+  console.log("TOGGLING LOADING")
   loadingScreen.classList.toggle("show");
 }
 
@@ -192,7 +193,11 @@ function windowOnClick(event){
           displayVideos(videos);
           placeYoutubeEmbedCards(videos);
           toggleLoading();
-        });
+        })
+      .catch(e =>{
+        console.log(e);
+        toggleLoading();
+      });
 
       break;
   }
