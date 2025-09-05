@@ -78,11 +78,16 @@ function doesItemContainKeywords(item, keywords){
   }
 
   return keywords.reduce((bool, keyword) => 
-            doesTextContainKeyword(textToSearch, keyword) && bool, true);
+            checkForKeyword(textToSearch, keyword) && bool, true);
 }
 
 //recursive function that appends index matches for a keyword. returns false if nothing is found
-function doesTextContainKeyword(giantTextString, keyword){
+function checkForKeyword(giantTextString, keyword){
+  console.log(keyword);
+  if(keyword[0] === "-"){
+    console.log(keyword[0]);
+    return giantTextString.indexOf(keyword.substring(1)) === -1;
+  }
   return giantTextString.indexOf(keyword) !== -1;
 }
 
