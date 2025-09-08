@@ -157,12 +157,7 @@ function makeYoutubeEmbedCard(video, index){
 }
 
 //event listeners
-let videoCards = document.getElementsByClassName("videoCard");
-let embedCards = document.getElementsByClassName("embedCard");
 let searchPlaylistButton = document.getElementById("searchPlaylistButton");
-let infoScreen = document.querySelector(".infoScreen");
-let loadingScreen = document.querySelector(".loadingScreen");
-let errorScreen = document.querySelector(".errorScreen");
 let showInformationButton = document.querySelector("#informationButton");
 let errorCloseButton = document.getElementById("errorCloseButton");
 let infoCloseButton = document.getElementById("infoCloseButton");
@@ -181,19 +176,22 @@ function toggleErrorScreen(error){
   let errorTexts = document.querySelectorAll(".errorText");
   errorTexts.forEach((errorText) => errorBox.removeChild(errorText));
 
-
   let errorText = document.createElement("p");
   errorText.classList.add("errorText");
   errorText.textContent = error;
   errorBox.appendChild(errorText);
+  
+  let errorScreen = document.querySelector(".errorScreen");
   errorScreen.classList.toggle("show");
 }
 
 function toggleInfoScreen(){
+  let infoScreen = document.querySelector(".infoScreen");
   infoScreen.classList.toggle("show");
 }
 
 function toggleLoading(){
+  let loadingScreen = document.querySelector(".loadingScreen");
   loadingScreen.classList.toggle("show");
 }
 
