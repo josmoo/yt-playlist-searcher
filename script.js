@@ -158,7 +158,7 @@ function makeYoutubeEmbedCard(video, index){
 
 //event listeners
 let searchPlaylistButton = document.getElementById("searchPlaylistButton");
-let showInformationButton = document.querySelector("#informationButton");
+let showInformationButton = document.getElementById("informationButton");
 let errorCloseButton = document.getElementById("errorCloseButton");
 let infoCloseButton = document.getElementById("infoCloseButton");
 
@@ -167,7 +167,7 @@ function toggleVideoEmbed(event) {
   if(oldVideoEmbed){
     oldVideoEmbed.classList.toggle("show");
   }
-  let videoEmbed = doc3ument.getElementById("embedCard" + event.currentTarget.lastChild.textContent);
+  let videoEmbed = document.getElementById("embedCard" + event.currentTarget.lastChild.textContent);
   videoEmbed.classList.toggle("show");
 }
 
