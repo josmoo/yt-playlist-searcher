@@ -160,29 +160,37 @@ function makeYoutubeEmbedCard(video, index){
 let videoCards = document.getElementsByClassName("videoCard");
 let embedCards = document.getElementsByClassName("embedCard");
 let searchPlaylistButton = document.getElementById("searchPlaylistButton");
-let infoPopup = document.querySelector(".infoPopup");
+let infoScreen = document.querySelector(".infoScreen");
 let loadingScreen = document.querySelector(".loadingScreen");
 let errorScreen = document.querySelector(".errorScreen");
 let showInformationButton = document.querySelector("#informationButton");
-let closeButton = document.querySelector(".closeButton");
+let errorCloseButton = document.getElementById("errorCloseButton");
+let infoCloseButton = document.getElementById("infoCloseButton");
 
 function toggleVideoEmbed(event) { 
   let oldVideoEmbed = document.querySelector(".show");
   if(oldVideoEmbed){
     oldVideoEmbed.classList.toggle("show");
   }
-  let videoEmbed = document.getElementById("embedCard" + event.currentTarget.lastChild.textContent);
+  let videoEmbed = doc3ument.getElementById("embedCard" + event.currentTarget.lastChild.textContent);
   videoEmbed.classList.toggle("show");
 }
 
-function toggleError(){
+function toggleErrorScreen(error){
   let errorBox = document.querySelector(".errorBox");
-  
+  let errorTexts = document.querySelectorAll(".errorText");
+  errorTexts.forEach((errorText) => errorBox.removeChild(errorText));
+
+
+  let errorText = document.createElement("p");
+  errorText.classList.add("errorText");
+  errorText.textContent = error;
+  errorBox.appendChild(errorText);
   errorScreen.classList.toggle("show");
 }
 
-function toggleInfoPopup(){
-  infoPopup.classList.toggle("show");
+function toggleInfoScreen(){
+  infoScreen.classList.toggle("show");
 }
 
 function toggleLoading(){
@@ -202,7 +210,7 @@ function windowOnClick(event){
           toggleLoading();
         })
       .catch(e =>{
-        
+        toggleErrorScreen(e);
         toggleLoading();
       });
 
@@ -210,6 +218,7 @@ function windowOnClick(event){
   }
 }
 
-showInformationButton.addEventListener("click", toggleInfoPopup);
-closeButton.addEventListener("click", toggleInfoPopup); 
+showInformationButton.addEventListener("click", toggleInfoScreen);
+infoCloseButton.addEventListener("click", toggleInfoScreen); 
+errorCloseButton.addEventListener("click", toggleErrorScreen);
 window.addEventListener("click", windowOnClick);

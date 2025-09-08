@@ -136,7 +136,7 @@ input[type="checkbox"] {
     accent-color: #FF0033;
 }
 
-.infoPopup,
+.infoScreen,
 .loadingScreen,
 .errorScreen{
     position: fixed;
