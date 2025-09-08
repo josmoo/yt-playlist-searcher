@@ -83,9 +83,7 @@ function doesItemContainKeywords(item, keywords){
 
 //recursive function that appends index matches for a keyword. returns false if nothing is found
 function checkForKeyword(giantTextString, keyword){
-  console.log(keyword);
   if(keyword[0] === "-"){
-    console.log(keyword[0]);
     return giantTextString.indexOf(keyword.substring(1)) === -1;
   }
   return giantTextString.indexOf(keyword) !== -1;
@@ -164,6 +162,7 @@ let embedCards = document.getElementsByClassName("embedCard");
 let searchPlaylistButton = document.getElementById("searchPlaylistButton");
 let infoPopup = document.querySelector(".infoPopup");
 let loadingScreen = document.querySelector(".loadingScreen");
+let errorScreen = document.querySelector(".errorScreen");
 let showInformationButton = document.querySelector("#informationButton");
 let closeButton = document.querySelector(".closeButton");
 
@@ -173,9 +172,13 @@ function toggleVideoEmbed(event) {
     oldVideoEmbed.classList.toggle("show");
   }
   let videoEmbed = document.getElementById("embedCard" + event.currentTarget.lastChild.textContent);
-  console.log(event.currentTarget);
-  console.log(videoEmbed);
   videoEmbed.classList.toggle("show");
+}
+
+function toggleError(){
+  let errorBox = document.querySelector(".errorBox");
+  
+  errorScreen.classList.toggle("show");
 }
 
 function toggleInfoPopup(){
@@ -183,7 +186,6 @@ function toggleInfoPopup(){
 }
 
 function toggleLoading(){
-  console.log("TOGGLING LOADING")
   loadingScreen.classList.toggle("show");
 }
 
@@ -200,7 +202,7 @@ function windowOnClick(event){
           toggleLoading();
         })
       .catch(e =>{
-        console.log(e);
+        
         toggleLoading();
       });
 
