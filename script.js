@@ -1,9 +1,11 @@
 /**
- * gets details of videos in given playlist
+ * retrieves all playlistItems from YouTube's API, filters them for user's keywords, creates an object 
+ * containing needed data to create a videoCard and embedCard then verifies it's valid and public. Each
+ * object is added to an array, where each video is verified to be valid and public, before being returned.
  * 
  * @param {string} apiKey 
- * @param {string} playlistId
- * @returns {array} videos - an array of video objects, which contains its title, description, channeltitle, tags, and category
+ * @param {string} playlistId dissected ID of playlist to search
+ * @returns {Object[]} an array of video objects
  */
 async function getPlaylistVideos(apiKey, playlistId, keywords) {
   let videos = [];
@@ -27,6 +29,12 @@ async function getPlaylistVideos(apiKey, playlistId, keywords) {
                                && video.description !== "This video is private.");
 }
 
+
+/**
+ * retrieves the playlistID after dissecting it from the playlist text input field
+ * 
+ * @returns the playlistID
+ */
 function dissectPlaylistURL() {
   const url = document.getElementById("playlistLink").value;
   const listIDPrefix = "list=";
@@ -38,6 +46,11 @@ function dissectPlaylistURL() {
          : listID.substring(0, tail);
 }
 
+/**
+ * retrieves the keywords after dissecting them from keywords text input field
+ * 
+ * @returns an array of keywords
+ */
 function getKeywords(){
   let keywordsString = document.getElementById("searchKeywords").value.toLowerCase();
   let keywords = [];
@@ -53,7 +66,6 @@ function getKeywords(){
     if(closingQuoteIndex === -1 || closingQuoteIndex-2 < openingQuoteIndex){
       console.log("uh oh oopsy woopsy");
       break;
-      //todo throw error and have error popup. i like the popup idea
     }
 
     keywords.push(keywordsString.slice(openingQuoteIndex + 1, closingQuoteIndex - 1));
@@ -65,6 +77,13 @@ function getKeywords(){
   return keywords;
 }
 
+/**
+ * Searches each of the item's user selected fields for each AND every keyword
+ * 
+ * @param {Object} item playlistItem resource retrieved from YouTube's API
+ * @param {string[]} keywords keywords to search for
+ * @returns true if all keywords are found in the playlistItem
+ */
 function doesItemContainKeywords(item, keywords){
   let textToSearch = "";
   if (document.querySelector("#searchTitleBool").checked){
@@ -81,14 +100,26 @@ function doesItemContainKeywords(item, keywords){
             checkForKeyword(textToSearch, keyword) && bool, true);
 }
 
-//recursive function that appends index matches for a keyword. returns false if nothing is found
-function checkForKeyword(giantTextString, keyword){
+/**
+ * checks if the videoText contains the keyword, or checks that it does not contain the keyword if
+ *  the keyword begins with a "-".
+ * 
+ * @param {string} videoText all of the video's text that the user would like to search
+ * @param {string} keyword the keyword to search for
+ * @returns 
+ */
+function checkForKeyword(videoText, keyword){
   if(keyword[0] === "-"){
-    return giantTextString.indexOf(keyword.substring(1)) === -1;
+    return videoText.indexOf(keyword.substring(1)) === -1;
   }
-  return giantTextString.indexOf(keyword) !== -1;
+  return videoText.indexOf(keyword) !== -1;
 }
 
+/**
+ * Cleans up old videocards before creating a videoCard for each given video and appending it to the DOM
+ * 
+ * @param {Object[]} videos an array of video objects
+ */
 function displayVideos(videos){
   const videoListContainer = document.getElementById("videoListContainer");
   while(videoListContainer.firstChild){
@@ -100,6 +131,13 @@ function displayVideos(videos){
   });
 }
 
+/**
+ * Creates a videoCard node
+ * 
+ * @param {Object} video an object containing all information needed to create the videoCard
+ * @param {integer} index 
+ * @returns the videoCard node
+ */
 function makeVideoCard(video, index){
   let videoCard = document.createElement("div");
   videoCard.classList.add("videoCard");
@@ -130,6 +168,12 @@ function makeVideoCard(video, index){
   return videoCard;
 }
 
+/**
+ * cleans up old embedCards before creating a youtubeEmbedCard object and appending 
+ * each to the DOM
+ * 
+ * @param {Object[]} videos an array of video objects
+ */
 function placeYoutubeEmbedCards(videos){
   const youtubeEmbedContainer = document.getElementById("youtubeEmbedContainer");
   while(youtubeEmbedContainer.firstChild){
@@ -138,6 +182,13 @@ function placeYoutubeEmbedCards(videos){
   videos.map((video, index) => youtubeEmbedContainer.appendChild(makeYoutubeEmbedCard(video, index)));
 }
 
+/**
+ * takes the video and creates an embedCard with all relevant data, then returns the embedCard
+ * 
+ * @param {Object} video an object containing all needed data to create an embedCard
+ * @param {integer} index 
+ * @returns an embedCard object
+ */
 function makeYoutubeEmbedCard(video, index){
   let embedCard = document.createElement("div");
   embedCard.classList.add("embedCard");
@@ -156,12 +207,12 @@ function makeYoutubeEmbedCard(video, index){
   return embedCard;
 }
 
-//event listeners
-let searchPlaylistButton = document.getElementById("searchPlaylistButton");
-let showInformationButton = document.getElementById("informationButton");
-let errorCloseButton = document.getElementById("errorCloseButton");
-let infoCloseButton = document.getElementById("infoCloseButton");
-
+/**
+ * Callback for an event listener hide the old embedCard and toggle the new embedCard when the associated
+ * videoCard is clicked
+ * 
+ * @param {Object} event an eventObject
+ */
 function toggleVideoEmbed(event) { 
   let oldVideoEmbed = document.querySelector(".show");
   if(oldVideoEmbed){
@@ -171,6 +222,11 @@ function toggleVideoEmbed(event) {
   videoEmbed.classList.toggle("show");
 }
 
+/**
+ * Creates an errorScreen object with error's text and appends it to the DOM
+ * 
+ * @param {Object} error 
+ */
 function toggleErrorScreen(error){
   let errorBox = document.querySelector(".errorBox");
   let errorTexts = document.querySelectorAll(".errorText");
@@ -185,11 +241,17 @@ function toggleErrorScreen(error){
   errorScreen.classList.toggle("show");
 }
 
+/**
+ * Toggles the infoScreen between hidden/shown
+ */
 function toggleInfoScreen(){
   let infoScreen = document.querySelector(".infoScreen");
   infoScreen.classList.toggle("show");
 }
 
+/**
+ * Toggles the loadingScreen between hidden/shown
+ */
 function toggleLoading(){
   let loadingScreen = document.querySelector(".loadingScreen");
   loadingScreen.classList.toggle("show");
@@ -216,6 +278,11 @@ function windowOnClick(event){
   }
 }
 
+//event listener stuff
+let searchPlaylistButton = document.getElementById("searchPlaylistButton");
+let showInformationButton = document.getElementById("informationButton");
+let errorCloseButton = document.getElementById("errorCloseButton");
+let infoCloseButton = document.getElementById("infoCloseButton");
 showInformationButton.addEventListener("click", toggleInfoScreen);
 infoCloseButton.addEventListener("click", toggleInfoScreen); 
 errorCloseButton.addEventListener("click", toggleErrorScreen);
