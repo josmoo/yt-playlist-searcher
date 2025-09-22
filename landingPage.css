@@ -8,6 +8,7 @@ button {
     background-color: #FF0033;
     padding: .32rem;
     color: #F4F3F2;
+    cursor: pointer;
 }
 
 input[type = "text"]{
@@ -46,6 +47,7 @@ label {
     padding: 10px;
     margin: 0px;
     opacity: 90%;
+    cursor: pointer;
 }
 
 .videoCard:hover{
@@ -130,6 +132,10 @@ label {
     flex-direction: column;
     justify-items: left;
     padding-bottom: 4%;
+}
+
+.checkboxLine > *{
+    cursor: pointer;
 }
 
 input[type="checkbox"] {
