@@ -126,8 +126,7 @@ function displayVideos(videos){
     videoListContainer.removeChild(videoListContainer.lastChild);
   }
   videos.map((video, index) => {
-    videoListContainer.appendChild(makeVideoCard(video, index))
-                      .addEventListener("click", toggleVideoEmbed);
+    videoListContainer.appendChild(makeVideoCard(video, index));
   });
 }
 
@@ -213,13 +212,12 @@ function makeYoutubeEmbedCard(video, index){
  * 
  * @param {Object} event an eventObject
  */
-function toggleVideoEmbed(event) { 
+function toggleVideoEmbed(embedCard) { 
   let oldVideoEmbed = document.querySelector(".show");
   if(oldVideoEmbed){
     oldVideoEmbed.classList.toggle("show");
   }
-  let videoEmbed = document.getElementById("embedCard" + event.currentTarget.lastChild.textContent);
-  videoEmbed.classList.toggle("show");
+  embedCard.classList.toggle("show");
 }
 
 /**
@@ -278,7 +276,9 @@ function windowOnClick(event){
   }
 }
 
+
 //event listener stuff
+let videoListContainer = document.getElementById("videoListContainer");
 let searchPlaylistButton = document.getElementById("searchPlaylistButton");
 let showInformationButton = document.getElementById("informationButton");
 let errorCloseButton = document.getElementById("errorCloseButton");
@@ -287,3 +287,10 @@ showInformationButton.addEventListener("click", toggleInfoScreen);
 infoCloseButton.addEventListener("click", toggleInfoScreen); 
 errorCloseButton.addEventListener("click", toggleErrorScreen);
 window.addEventListener("click", windowOnClick);
+
+videoListContainer.addEventListener('click', (event)=>{
+  const target = event.target.closest(".videoCard");
+  if(target.matches('.videoCard')){
+    toggleVideoEmbed(document.getElementById("embedCard" + target.lastChild.textContent));
+  }
+});
