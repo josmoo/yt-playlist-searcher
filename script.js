@@ -10,6 +10,7 @@
 async function getPlaylistVideos(apiKey, playlistId, keywords) {
   let videos = [];
   let nextPageToken = '';
+
   do {
     const res = await fetch(
       `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&key=${apiKey}${nextPageToken ? `&pageToken=${nextPageToken}` : ''}`
@@ -128,6 +129,7 @@ function displayVideos(videos){
   videos.map((video, index) => {
     videoListContainer.appendChild(makeVideoCard(video, index));
   });
+  document.getElementById("searchResultsContainer").style.display = "flex";
 }
 
 /**
@@ -156,68 +158,57 @@ function makeVideoCard(video, index){
   let channelTitle = document.createElement("h4");
   channelTitle.textContent = video.channelTitle;
 
-  let indexText = document.createElement("h5");
-  indexText.textContent = index;
-
   videoCard.appendChild(thumbnail);
   videoCard.appendChild(titleContainer);
   videoCard.appendChild(channelTitle);
-  videoCard.appendChild(indexText);
+  videoCard.dataset.videoId = video.videoId;
+  videoCard.dataset.description = video.description;
 
   return videoCard;
 }
 
 /**
- * cleans up old embedCards before creating a youtubeEmbedCard object and appending 
- * each to the DOM
+ * Takes in an video ID and video description to replace player and description in DOM
  * 
- * @param {Object[]} videos an array of video objects
+ * @param {*} id id of video
+ * @param {*} description description of video
  */
-function placeYoutubeEmbedCards(videos){
-  const youtubeEmbedContainer = document.getElementById("youtubeEmbedContainer");
-  while(youtubeEmbedContainer.firstChild){
-    youtubeEmbedContainer.removeChild(youtubeEmbedContainer.lastChild);
-  }
-  videos.map((video, index) => youtubeEmbedContainer.appendChild(makeYoutubeEmbedCard(video, index)));
+function replaceEmbedCard(id, description){
+  replacePlayer(id);
+  replaceEmbedCardDescription(description);
 }
 
 /**
- * takes the video and creates an embedCard with all relevant data, then returns the embedCard
+ * Creates a new player to display the video associated with ID
  * 
- * @param {Object} video an object containing all needed data to create an embedCard
- * @param {integer} index 
- * @returns an embedCard object
+ * @param {string} id 
  */
-function makeYoutubeEmbedCard(video, index){
-  let embedCard = document.createElement("div");
-  embedCard.classList.add("embedCard");
-  embedCard.id = "embedCard" + index.toString();
-
-  let videoEmbed = document.createElement("iframe");
-  videoEmbed.src = "https://www.youtube.com/embed/" + video.videoId;
-
-
-  let description = document.createElement("p");
-  description.textContent = video.description;
-
-  embedCard.appendChild(videoEmbed);
-  embedCard.appendChild(description);
-
-  return embedCard;
+function replacePlayer(id){
+  if(player){
+    player.destroy();
+  }
+  player = new YT.Player('player', {
+    height: '200',
+    width: '260',
+    videoId: id,
+    playerVars:{
+      'controls':1,
+      'enablejsapi':1,
+      'origin': "https://josmoo.github.io/yt-playlist-searcher/",
+      'playsinline':1,
+      'rel':0
+    }
+  });
 }
 
 /**
- * Callback for an event listener hide the old embedCard and toggle the new embedCard when the associated
- * videoCard is clicked
+ * Replaces the DOM's description with the new arg
  * 
- * @param {Object} event an eventObject
+ * @param {string} description 
  */
-function toggleVideoEmbed(embedCard) { 
-  let oldVideoEmbed = document.querySelector(".show");
-  if(oldVideoEmbed){
-    oldVideoEmbed.classList.toggle("show");
-  }
-  embedCard.classList.toggle("show");
+function replaceEmbedCardDescription(description){
+  embedDescription = document.getElementById("embedDescription");
+  embedDescription.textContent = description;
 }
 
 /**
@@ -264,7 +255,6 @@ function windowOnClick(event){
         getKeywords())
       .then(videos => {
           displayVideos(videos);
-          placeYoutubeEmbedCards(videos);
           toggleLoading();
         })
       .catch(e =>{
@@ -291,6 +281,13 @@ window.addEventListener("click", windowOnClick);
 videoListContainer.addEventListener('click', (event)=>{
   const target = event.target.closest(".videoCard");
   if(target.matches('.videoCard')){
-    toggleVideoEmbed(document.getElementById("embedCard" + target.lastChild.textContent));
+    replaceEmbedCard(target.dataset.videoId, target.dataset.description);
   }
 });
+
+//pvideo player stuff
+var tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+var player;

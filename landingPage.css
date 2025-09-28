@@ -1,4 +1,5 @@
 button {
+    min-width: fit-content;
     width: 22%;
     font-size: 18px;
     margin-top: 2%;
@@ -24,11 +25,11 @@ label {
     border: #441122;
     border-width: 2px;
     border-style: solid;
-    display: flex;
-    max-height: 64vh;
+    height: 68vh;
     margin: 0px;
     padding: 0px;
     gap: 0px;
+    display: none;
 }
 
 #videoListContainer{
@@ -112,9 +113,11 @@ label {
     visibility: hidden;
 }
 
-.embedCard > iframe{
+#player{
     align-self: center;
     border: none;
+    min-width: 200px;
+    min-height: 200px;
     width: 100%;
 }
 
@@ -202,15 +205,16 @@ input[type="checkbox"] {
 @media (max-width: 560px){
     #searchResultsContainer{
         flex-direction: column-reverse;
+        height: 86vh !important;
+        width: 94vw;
     }
     #videoListContainer{
-        flex: 1 1 45vh;
+        flex: 1 1 54vh;
         width: 100%;
-        height: 72%;
     }
     #youtubeEmbedContainer{
-        flex: 1 1 19vh;
-        width: 100% !important;
+        flex: 1 1 32vh;
+        width: 98% !important;
     }
     .embedCard{
         flex-direction: row;
