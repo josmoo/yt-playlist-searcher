@@ -16,7 +16,7 @@ async function getPlaylistVideos(apiKey, playlistId, keywords) {
       `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&key=${apiKey}${nextPageToken ? `&pageToken=${nextPageToken}` : ''}`
     );
     const data = await res.json();
-    videos = videos.concat(data.items.filter(item => doesItemContainKeywords(item, keywords))
+    videos = videos.concat(data.items.filter(item => doesVideoContainKeywords(item.snippet, keywords))
                           .map(item => ({
       title: item.snippet.title,
       description: item.snippet.description,
@@ -26,8 +26,7 @@ async function getPlaylistVideos(apiKey, playlistId, keywords) {
     })));
     nextPageToken = data.nextPageToken;
   } while (nextPageToken);
-  return videos.filter((video) => video.description !== "This video is unavailable." 
-                               && video.description !== "This video is private.");
+  return videos;
 }
 
 
@@ -79,22 +78,29 @@ function getKeywords(){
 }
 
 /**
- * Searches each of the item's user selected fields for each AND every keyword
+ * Ensures the video is public and available before searching each of the video's user 
+ * selected fields for each AND every keyword
  * 
- * @param {Object} item playlistItem resource retrieved from YouTube's API
+ * @param {Object} video playlistItem resource retrieved from YouTube's API
  * @param {string[]} keywords keywords to search for
  * @returns true if all keywords are found in the playlistItem
  */
-function doesItemContainKeywords(item, keywords){
+function doesVideoContainKeywords(video, keywords){
   let textToSearch = "";
+
+  if((video.description == "This video is unavailable.")
+      && (video.description == "This video is private.")){
+    return false;
+  }
+
   if (document.querySelector("#searchTitleBool").checked){
-    textToSearch += item.snippet.title.toLowerCase();
+    textToSearch += video.title.toLowerCase();
   }
   if (document.querySelector("#searchDescriptionBool").checked){
-    textToSearch += item.snippet.description.toLowerCase();
+    textToSearch += video.description.toLowerCase();
   } 
   if (document.querySelector("#searchChannelTitleBool").checked){
-    textToSearch += item.snippet.videoOwnerChannelTitle.toLowerCase();
+    textToSearch += video.videoOwnerChannelTitle.toLowerCase();
   }
 
   for (const keyword of keywords){
