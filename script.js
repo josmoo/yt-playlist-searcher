@@ -97,8 +97,12 @@ function doesItemContainKeywords(item, keywords){
     textToSearch += item.snippet.videoOwnerChannelTitle.toLowerCase();
   }
 
-  return keywords.reduce((bool, keyword) => 
-            checkForKeyword(textToSearch, keyword) && bool, true);
+  for (const keyword of keywords){
+    if(!checkForKeyword(textToSearch, keyword)){
+      return false;
+    }
+  }
+  return true;
 }
 
 /**
@@ -107,7 +111,7 @@ function doesItemContainKeywords(item, keywords){
  * 
  * @param {string} videoText all of the video's text that the user would like to search
  * @param {string} keyword the keyword to search for
- * @returns 
+ * @returns true if videoText contains keyword, false otherwise
  */
 function checkForKeyword(videoText, keyword){
   if(keyword[0] === "-"){
@@ -261,7 +265,6 @@ function windowOnClick(event){
         toggleErrorScreen(e);
         toggleLoading();
       });
-
       break;
   }
 }
@@ -285,7 +288,7 @@ videoListContainer.addEventListener('click', (event)=>{
   }
 });
 
-//pvideo player stuff
+//video player stuff
 var tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
