@@ -103,12 +103,15 @@ function doesVideoContainKeywords(video, keywords){
     textToSearch += video.videoOwnerChannelTitle.toLowerCase();
   }
 
+  //handles searchtype selection
+  let andSearch = document.querySelector("#andSearchBool").checked;
+
   for (const keyword of keywords){
-    if(!checkForKeyword(textToSearch, keyword)){
-      return false;
+    if(checkForKeyword(textToSearch, keyword) != andSearch){
+      return !andSearch;
     }
   }
-  return true;
+  return andSearch;
 }
 
 /**
