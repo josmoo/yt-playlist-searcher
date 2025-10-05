@@ -12,7 +12,7 @@
 <body>
     <div class = "header">
         <input type="image" id = "logo" alt = "logo" src="./images/logo.png">
-        <h3> YT Playlist Searcher </h3> <!-- todo this should be a link as well-->
+        <h3> YT Playlist Searcher </h3>
     </div>
 
     <div id = "searchResultsContainer">
@@ -25,11 +25,11 @@
     </div>
 
     <button type="button" id = "searchPlaylistButton">Search playlist</button>
-
-    <label for = "playlistLink">Enter your playlist:</label>
-    <input type="text" id = "playlistLink"
-           placeholder="https://www.youtube.com/watch?v=0123456789A&list=PL0123456789ABCDEFGHIJKLMNOPQRSTUV">
-
+    <div class = "searchTextContainer">
+        <label for = "playlistLink">Enter your playlist:</label>
+        <input type="text" id = "playlistLink"
+               placeholder="https://www.youtube.com/watch?v=0123456789A&list=PL0123456789ABCDEFGHIJKLMNOPQRSTUV">
+    </div>
     <div id = "searchBarTextContainer">
         <label for = "searchKeywords">Enter keyword(s) to search for:</label>
         <input type ="image" id = "informationButton" alt = "click to learn more about searching with keywords"
@@ -37,6 +37,17 @@
     </div>
     <input type="text" id = "searchKeywords"
            placeholder = "kansas &quot;rock climb&quot; -indoor">
+
+    <div id = "searchTypeSelectionContainer">
+        <div>
+            <input type = "radio" id = "andSearchBool" name = "searchType" checked>
+            <label for = "andSearchBool">Search <em><b>every</b></em> keyword (AND logic)</label>
+        </div>
+        <div>
+            <input type = "radio" id = "orSearchBool" name = "searchType">
+            <label for = "orSearchBool">Search <em><b>at least one</b></em> keyword (OR logic)</label>
+        </div>
+    </div>
 
 
     <label for = "checkboxContainer">Search each video's:</label>

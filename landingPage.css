@@ -12,13 +12,10 @@ button {
     cursor: pointer;
 }
 
-input[type = "text"]{
+.searchTextContainer{
+    display: flex;
+    flex-direction: column;
     margin-bottom: 2%;
-    font-size: 18px;
-}
-
-label {
-    font-size: 18px;
 }
 
 #searchResultsContainer{
@@ -139,7 +136,8 @@ label {
     cursor: pointer;
 }
 
-input[type="checkbox"] {
+input[type="checkbox"],
+input[type="radio"] {
     accent-color: #FF0033;
 }
 
