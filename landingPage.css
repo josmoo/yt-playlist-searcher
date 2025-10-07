@@ -1,7 +1,15 @@
+html{
+    font-size: clamp(16px, .84vw + .84vh, 32px);
+}
+
+input[type="text"]{
+    font-size: .94rem;
+}
+
 button {
     min-width: fit-content;
     width: 22%;
-    font-size: 18px;
+    font-size: 1rem;
     margin-top: 2%;
     margin-bottom: 2%;
     border: none;
@@ -12,10 +20,8 @@ button {
     cursor: pointer;
 }
 
-.searchTextContainer{
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 2%;
+#playlistLink{
+    margin-bottom: 3.2vh;
 }
 
 #searchResultsContainer{
@@ -124,12 +130,14 @@ button {
     justify-content: space-between;
 }
 
+#searchTypeSelectionContainer{
+    margin-bottom: 3.2vh;
+}
 
 #checkboxContainer{
     display: inline-block;
     flex-direction: column;
     justify-items: left;
-    padding-bottom: 4%;
 }
 
 .checkboxLine > *{
@@ -140,6 +148,7 @@ input[type="checkbox"],
 input[type="radio"] {
     accent-color: #FF0033;
 }
+
 
 .infoScreen,
 .loadingScreen,
